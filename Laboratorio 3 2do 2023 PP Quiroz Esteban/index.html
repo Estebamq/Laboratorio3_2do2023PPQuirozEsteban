@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio 3 2do 2023 PP Quiroz Esteban</title>
+    
+    <style>
+        .formulario {
+            display: none;
+        }
+        body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        div {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        select, input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .formulario {
+            display: none;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .formulario h1 {
+            margin-top: 0;
+        }
+
+        
+        @media (max-width: 768px) {
+        label {
+            width: 100%;
+            max-width: none;
+        }
+
+        select, input[type="text"], input[type="number"] {
+            width: 100%;
+        }
+
+        button {
+            padding: 8px 16px;
+        }
+
+        .formulario {
+            padding: 10px;
+        }
+    }
+    </style>
+</head>
+<body>
+    <h1>Form datos</h1>
+    <div>
+        <label for="filtroTipo">Filtrar por Tipo:</label>
+        <select id="filtroTipo">
+            <option value="todos">Todos</option>
+            <option value="terrestres">Terrestres</option>
+            <option value="aereos">Aéreos</option>
+        </select>
+    </div>
+    <div>
+        <label for="chkId">ID</label>
+        <input type="checkbox" id="chkId" checked>
+        <label for="chkModelo">Modelo</label>
+        <input type="checkbox" id="chkModelo" checked>
+        <label for="chkAño">Año de Fabricación</label>
+        <input type="checkbox" id="chkAño" checked>
+        <label for="chkVelocidad">Velocidad Máxima</label>
+        <input type="checkbox" id="chkVelocidad" checked>
+        <label for="chkAltura">Altura Máxima</label>
+        <input type="checkbox" id="chkAltura" checked>
+        <label for="chkAutonomia">Autonomía</label>
+        <input type="checkbox" id="chkAutonomia" checked>
+        <label for="chkPuertas">Cantidad de Puertas</label>
+        <input type="checkbox" id="chkPuertas" checked>
+        <label for="chkRuedas">Cantidad de Ruedas</label>
+        <input type="checkbox" id="chkRuedas" checked>
+    </div>
+    <div>
+        <label for="txtPromedioVelocidad">Promedio de Velocidad Máxima:</label>
+        <input type="text" id="txtPromedioVelocidad" readonly>
+        <button id="btnCalcularPromedio">Calcular Promedio</button>
+    </div>
+    <table border="1">
+        <thead>
+            <tr>
+                <th id="thId">ID</th>
+                <th id="thModelo">Modelo</th>
+                <th id="thAño">Año de Fabricación</th>
+                <th id="thVelocidad">Velocidad Máxima</th>
+                <th id="thAltura">Altura Máxima</th>
+                <th id="thAutonomia">Autonomía</th>
+                <th id="thPuertas">Cantidad de Puertas</th>
+                <th id="thRuedas">Cantidad de Ruedas</th>
+            </tr>
+        </thead>
+        <tbody id="tablaVehiculos">
+            <!-- Aquí se insertarán las filas de la tabla dinámicamente -->
+        </tbody>
+    </table>
+    <button id="btnAgregar">Agregar</button>
+    <div class="formulario" id="formularioAgregar">
+        <h1>ABM Vehículos</h1>
+
+        <!-- Formulario para Alta de Vehículo -->
+        <h2>Alta de Vehículo</h2>
+        <form id="altaForm">
+            <label for="altaModelo">Modelo:</label>
+            <input type="text" id="altaModelo" required><br>
+            <label for="altaAnoFabricacion">Año de Fabricación:</label>
+            <input type="number" id="altaAnoFabricacion" required><br>
+            <label for="altaVelocidadMaxima">Velocidad Máxima:</label>
+            <input type="number" id="altaVelocidadMaxima" required><br>
+            <label for="altaTipo">Tipo de Vehículo:</label>
+            <select id="altaTipo" required>
+                <option value="terrestre">Terrestre</option>
+                <option value="aereo">Aéreo</option>
+            </select><br>
+            <!-- Campos adicionales según el tipo de vehículo -->
+            <div id="altaTerrestre" style="display: none;">
+                <label for="altaCantidadPuertas">Cantidad de Puertas:</label>
+                <input type="number" id="altaCantidadPuertas" required><br>
+                <label for="altaCantidadRuedas">Cantidad de Ruedas:</label>
+                <input type="number" id="altaCantidadRuedas" required><br>
+            </div>
+            <div id="altaAereo" style="display: none;">
+                <label for="altaAlturaMaxima">Altura Máxima:</label>
+                <input type="number" id="altaAlturaMaxima" required><br>
+                <label for="altaAutonomia">Autonomía:</label>
+                <input type="number" id="altaAutonomia" required><br>
+            </div>
+            <button id="btnAgregarVehiculo">Agregar Vehículo</button>
+        </form>
+        <button id="btnModificar" >Modificar</button>
+        <button id="btnEliminar" >Eliminar</button>
+        <button id="btnCancelarAgregar">Cancelar</button>
+    </div>
+
+    <script>
+        class Vehiculo {
+            constructor(id, modelo, anoFab, velMax) {
+            this.id = id > 0 ? id : 0;
+            this.modelo = modelo;
+            this.anoFab = anoFab;
+            this.velMax = velMax;
+            }
+        
+            // Método toString sobreescrito para devolver una representación de cadena personalizada
+            toString() {
+                return `Vehículo ID: ${this.id}, Modelo: ${this.modelo}, Año de Fabricación: ${this.anoFab}, Velocidad Máxima: ${this.velMax}`;
+            }
+        }
+    
+        // Definimos la clase Terrestre que hereda de Vehiculo
+        class Terrestre extends Vehiculo {
+            constructor(id, modelo, anoFab, velMax, cantPue, cantRue) {
+            super(id, modelo, anoFab, velMax);
+            this.cantPue = cantPue > 1 ? cantPue : 2; // al menos 2 puertas
+            this.cantRue = cantRue > 0 ? cantRue : 4; // al menos 4 ruedas
+            }
+        }
+    
+        // Definimos la clase Aereo que hereda de Vehiculo
+        class Aereo extends Vehiculo {
+            constructor(id, modelo, anoFab, velMax, altMax, autonomia) {
+            super(id, modelo, anoFab, velMax);
+            this.altMax = altMax;
+            this.autonomia = autonomia;
+            }
+        }
+    
+        // Datos del array
+        const datos = [
+            {"id": 14, "modelo": "Ferrari F100", "anoFab": 1998, "velMax": 400, "cantPue": 2, "cantRue": 4},
+            {"id": 51, "modelo": "Dodge Viper", "anoFab": 1991, "velMax": 266, "cantPue": 2, "cantRue": 4},
+            {"id": 67, "modelo": "Boeing CH-47 Chinook", "anoFab": 1962, "velMax": 302, "altMax": 6, "autonomia": 1200},
+            {"id": 666, "modelo": "Aprilia RSV 1000 R", "anoFab": 2004, "velMax": 280, "cantPue": 0, "cantRue": 2},
+            {"id": 872, "modelo": "Boeing 747-400", "anoFab": 1989, "velMax": 988, "altMax": 13, "autonomia": 13450},
+            {"id": 742, "modelo": "Cessna CH-1 SkyhookR", "anoFab": 1953, "velMax": 174, "altMax": 3, "autonomia": 870}
+        ];
+
+         // Función para agregar una fila a la tabla
+         function agregarFila(id, modelo, anoFab, velMax, altMax, autonomia, cantPue, cantRue) {
+            const tabla = document.getElementById("tablaVehiculos");
+            const fila = tabla.insertRow();
+            const celdas = [id, modelo, anoFab, velMax, altMax, autonomia, cantPue, cantRue];
+
+            // Agregar celdas a la fila y asignar clases según la columna
+            for (let i = 0; i < celdas.length; i++) {
+                const celda = fila.insertCell();
+                celda.textContent = celdas[i];
+                celda.classList.add(`col${i}`);
+            }
+
+        }
+
+
+        // Función para actualizar la visibilidad de las filas según el filtro de tipo seleccionado
+        function actualizarFiltroTipo() {
+                    const filtroTipo = document.getElementById("filtroTipo").value;
+                    const filas = document.querySelectorAll("tbody#tablaVehiculos tr");
+
+                    filas.forEach((fila) => {
+                        const tipo = fila.querySelector(".col5").textContent.trim() === "" ? "terrestres" : "aereos";
+                        if (filtroTipo === "todos" || filtroTipo === tipo) {
+                            fila.style.display = "table-row";
+                        } else {
+                            fila.style.display = "none";
+                        }
+                    });
+                }
+
+        // Función para actualizar la visibilidad de las columnas según los checkboxes
+        function actualizarColumnas() {
+            const columnas = document.querySelectorAll("th");
+            const checkboxes = document.querySelectorAll("input[type=checkbox]");
+
+            checkboxes.forEach((checkbox, index) => {
+                const columna = columnas[index];
+                columna.style.display = checkbox.checked ? "table-cell" : "none";
+                // Si la columna está oculta, también ocultar todas las celdas de esa columna
+                const celdas = document.querySelectorAll(`.col${index}`);
+                celdas.forEach((celda) => {
+                    celda.style.display = checkbox.checked ? "table-cell" : "none";
+                });
+            });
+        }
+
+        // Función para mostrar el formulario de agregar
+        function mostrarFormularioAgregar() {
+            const formularioAgregar = document.getElementById("formularioAgregar");
+            formularioAgregar.style.display = "block";
+        }
+
+        // Función para ocultar el formulario de agregar
+        function ocultarFormularioAgregar() {
+            const formularioAgregar = document.getElementById("formularioAgregar");
+            formularioAgregar.style.display = "none";
+        }
+
+        
+
+        // Función para calcular el promedio de velocidad máxima de los elementos filtrados
+        function calcularPromedioVelocidad() {
+                    const filtroTipo = document.getElementById("filtroTipo").value;
+                    const velocidadColumna = 3; // Índice de la columna de velocidad máxima
+                    const filas = document.querySelectorAll("tbody#tablaVehiculos tr");
+
+                    // Filtrar las filas según el filtro de tipo seleccionado y obtener la velocidad máxima
+                    const velocidadesFiltradas = Array.from(filas)
+                        .filter((fila) => {
+                            const tipo = fila.querySelector(".col5").textContent.trim() === "" ? "terrestres" : "aereos";
+                            return filtroTipo === "todos" || filtroTipo === tipo;
+                        })
+                        .map((fila) => parseFloat(fila.querySelector(`.col${velocidadColumna}`).textContent));
+
+                    if (velocidadesFiltradas.length > 0) {
+                        const promedio = velocidadesFiltradas.reduce((total, velocidad) => total + velocidad, 0) / velocidadesFiltradas.length;
+                        document.getElementById("txtPromedioVelocidad").value = promedio.toFixed(2);
+                    } else {
+                        document.getElementById("txtPromedioVelocidad").value = "N/A";
+                    }
+        }
+
+        // Función para mostrar u ocultar campos según el tipo de vehículo seleccionado
+        function actualizarCamposTipo() {
+            const tipoSeleccionado = document.getElementById("altaTipo").value;
+            const terrestreDiv = document.getElementById("altaTerrestre");
+            const aereoDiv = document.getElementById("altaAereo");
+
+            if (tipoSeleccionado === "terrestre") {
+                terrestreDiv.style.display = "block";
+                aereoDiv.style.display = "none";
+            } else if (tipoSeleccionado === "aereo") {
+                terrestreDiv.style.display = "none";
+                aereoDiv.style.display = "block";
+            } else {
+                terrestreDiv.style.display = "none";
+                aereoDiv.style.display = "none";
+            }
+        }
+
+        // Función para agregar un vehículo
+        function agregarVehiculo(event) {
+            event.preventDefault(); // Evita el envío del formulario
+
+            const modelo = document.getElementById("altaModelo").value;
+            const anoFab = parseInt(document.getElementById("altaAnoFabricacion").value);
+            const velMax = parseInt(document.getElementById("altaVelocidadMaxima").value);
+            const tipo = document.getElementById("altaTipo").value;
+            let vehiculo;
+
+            if (tipo === "terrestre") {
+                const cantPuer = parseInt(document.getElementById("altaCantidadPuertas").value);
+                const cantRue = parseInt(document.getElementById("altaCantidadRuedas").value);
+                vehiculo = new Terrestre(0, modelo, anoFab, velMax, cantPuer, cantRue);
+            } else if (tipo === "aereo") {
+                const altMax = parseInt(document.getElementById("altaAlturaMaxima").value);
+                const autonomia = parseInt(document.getElementById("altaAutonomia").value);
+                vehiculo = new Aereo(0, modelo, anoFab, velMax, altMax, autonomia);
+            } else {
+                alert("Seleccione un tipo de vehículo válido.");
+                return;
+            }
+
+            
+            datos.push(vehiculo);
+            actualizarTabla();
+            limpiarFormulario();
+        }
+
+        
+        // Función para actualizar la tabla con los datos actuales
+        function actualizarTabla() {
+            const tabla = document.getElementById("tablaVehiculos");
+            const tbody = tabla.querySelector("tbody");
+            // Agregar las filas con los datos actualizados
+            datos.forEach((item) => {
+                agregarFila(item.id, item.modelo, item.anoFab, item.velMax, item.altMax || "", item.autonomia || "", item.cantPue || "", item.cantRue || "");
+            });
+        }
+
+        // Función para limpiar el formulario después de agregar un vehículo
+        function limpiarFormulario() {
+            document.getElementById("altaModelo").value = "";
+            document.getElementById("altaAnoFabricacion").value = "";
+            document.getElementById("altaVelocidadMaxima").value = "";
+            document.getElementById("altaTipo").value = "terrestre";
+            document.getElementById("altaCantidadPuertas").value = "";
+            document.getElementById("altaCantidadRuedas").value = "";
+            document.getElementById("altaAlturaMaxima").value = "";
+            document.getElementById("altaAutonomia").value = "";
+            document.getElementById("altaTerrestre").style.display = "none";
+            document.getElementById("altaAereo").style.display = "none";
+        }
+
+        // Escuchar clic en el botón "Agregar"
+        const btnAgregar = document.getElementById("btnAgregar");
+        btnAgregar.addEventListener("click", mostrarFormularioAgregar);
+
+        // Escuchar clic en el botón "AgregarVehivulo"
+        const btnAgregarVehiculo = document.getElementById("btnAgregarVehiculo");
+        btnAgregarVehiculo.addEventListener("click", agregarVehiculo);
+
+        // Escuchar clic en el botón "Cancelar" del formulario de agregar
+        const btnCancelarAgregar = document.getElementById("btnCancelarAgregar");
+        btnCancelarAgregar.addEventListener("click", ocultarFormularioAgregar);
+
+        // Escuchar cambios en el tipo de vehículo
+        document.getElementById("altaTipo").addEventListener("change", actualizarCamposTipo);
+
+        
+
+        // Escuchar cambios en los checkboxes
+        const checkboxes = document.querySelectorAll("input[type=checkbox]");
+        checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener("change", actualizarColumnas);
+        });
+        // Escuchar cambios en el filtro de tipo
+        const filtroTipo = document.getElementById("filtroTipo");
+        filtroTipo.addEventListener("change", actualizarFiltroTipo);
+
+        // Escuchar clic en el botón para calcular el promedio
+        const btnCalcularPromedio = document.getElementById("btnCalcularPromedio");
+        btnCalcularPromedio.addEventListener("click", calcularPromedioVelocidad);
+
+        // Agregar las filas con los datos actualizados
+        datos.forEach((item) => {
+                agregarFila(item.id, item.modelo, item.anoFab, item.velMax, item.altMax || "", item.autonomia || "", item.cantPue || "", item.cantRue || "");
+        });
+        
+
+        // Inicialmente, actualizar la visibilidad de las filas según el filtro de tipo
+        actualizarFiltroTipo();
+
+
+        // Inicialmente, actualizar la visibilidad de las columnas según los checkboxes
+        actualizarColumnas();
+    </script>
+</body>
+</html>
